@@ -1,17 +1,27 @@
-PREFIX = /usr
+PREFIX = /usr/local
+MANPREFIX = /share/man
+CFLAGS = -lX11
+CC = cc
+PROG = colorpicker
 
-colorpicker: main.c
-	cc -o colorpicker main.c `pkg-config --libs --cflags x11`
+SRCS = ${PROG}.c
+OBJS = ${SRCS:.c=.o}
 
-install: colorpicker
-	mkdir -p $(DESTDIR)$(PREFIX)/bin/
-	mv colorpicker $(DESTDIR)$(PREFIX)/bin/
-	chmod +x $(DESTDIR)$(PREFIX)/bin/colorpicker
+all: ${PROG}
 
-uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/colorpicker
+${PROG}: 
+	${CC} ${SRCS} ${CFLAGS} -o ${PROG}
 
 clean:
-	rm -f colorpicker
+	-rm  colorpicker
 
-.PHONY: clean install uninstall
+install: all
+	install -D -m 755 ${PROG} ${PREFIX}/bin/${PROG}
+	install -D -m 644 ${PROG}.1 ${PREFIX}${MANPREFIX}/man1/${PROG}.1
+
+uninstall:
+	rm -f ${DESTDIR}${PREFIX}/bin/${PROG}
+	rm -f ${DESTDIR}${PREFIX}${MANPREFIX}/man1/${PROG}.1
+
+
+.PHONY: all clean install uninstall

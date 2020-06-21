@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 					break;
 				}
 		} else if (e.type == ButtonPress ||
-				(e.type == KeyPress && (e.xkey.keycode == 53 || quit_on_keypress))) {
+				(e.type == KeyPress && ((e.xkey.keycode == 53 || e.xkey.keycode == 9 || e.xkey.keycode == 38 )|| quit_on_keypress))) {
 			break;
 		}
 		XDestroyImage(image);
